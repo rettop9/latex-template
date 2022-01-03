@@ -1,0 +1,651 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customtex}[2021/05/11 Personal collection of LaTeX macros]
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   PACKAGES   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+% to patch commands
+\RequirePackage{etoolbox}
+
+% better typography
+\RequirePackage{microtype}
+
+% better enumerates
+\RequirePackage{enumitem}
+% quotation marks
+\RequirePackage{csquotes}
+% better looking tables
+\RequirePackage{booktabs}
+
+% math stuff
+\RequirePackage{mathtools}
+% more arrows
+\RequirePackage{extarrows}
+% theorem-like environments
+\RequirePackage{amsthm}
+% commutative diagrams
+\RequirePackage{tikz-cd}
+
+% allows to change the math font
+% also loads fontspec
+\RequirePackage[
+	% no space around equal sign!
+	warnings-off={mathtools-colon,mathtools-overbracket},
+	partial = upright
+]{unicode-math}
+
+\RequirePackage{polyglossia}
+\setdefaultlanguage{english}
+
+% bibliography
+% needs to be loaded after polyglossia
+\RequirePackage[
+	backend    = biber,
+	style      = alphabetic,
+	dateabbrev = false,
+	urldate    = long
+]{biblatex}
+
+% referencing and hyperlinking
+% load hyperref after everything else
+% except for cleveref
+\RequirePackage{hyperref}
+\RequirePackage[
+	capitalise,
+	noabbrev,
+	nameinlink
+]{cleveref}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   PACKAGE OPTIONS   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Make things more fancy
+\newcommand{\mytheoremstyle}{definition}
+\newcommand{\fancysep}{12pt}
+\newcommand{\fancyifelse}[2]{#2}
+\xdefinecolor{fancycolor}{rgb}{0,0,0}
+\DeclareOption{fancy}{
+	\renewcommand{\mytheoremstyle}{fancy}
+	\renewcommand{\fancyifelse}[2]{#1}
+	\xdefinecolor{fancycolor}{rgb}{0.65,0.04,0.07}
+}
+
+\ProcessOptions\relax
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   PACKAGE CONFIGURATION   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%% FONT CONFIGURATION %%%%%
+
+\setmainfont[
+	Numbers     = OldStyle,
+	Contextuals = Alternate
+]{Libertinus Serif}
+\setsansfont[
+	Contextuals = Alternate
+]{Libertinus Sans}
+\setmathfont{Libertinus Math}
+
+% sanf serif for hyperlinks
+\urlstyle{sf}
+
+% adjust arrows in tikz to font
+%\RequirePackage{libertikz}
+
+
+
+%%%%% SPACING CONFIGURATION %%%%%
+
+\frenchspacing
+\binoppenalty = \maxdimen % breaking of binary operators
+\relpenalty   = \maxdimen % breaking of relation symbols
+
+% show overfull hboxes
+\overfullrule = 3mm
+
+% fix a bug in amsmath
+% see https://tex.stackexchange.com/questions/461537/
+\patchcmd{\colon}{{:}}{\mathopen:}{}{}
+
+
+
+%%%%% BIBLIOGRAPHY CONFIGURATION %%%%%
+
+% always insert pp. after pagetotal,
+% even if it isn’t recognized as a number by biblatex
+\DeclareFieldFormat[book,booklet]{pagetotal}{#1~\ppno}
+
+% no unplaned surprises with \cite
+\DeclareFieldFormat{postnote}{#1}
+\DeclareFieldFormat{multipostnote}{#1}
+
+% formatting of entries
+\DeclareFieldFormat[article,book,collection,incollection,proceedings,inproceedings]{number}{\mkbibbold{#1}}
+\DeclareFieldFormat[article,collection,incollection]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[book]{pagetotal}{#1~\ppno}
+
+
+
+%%%%%% LIST CONFIGURATION %%%%%
+
+% enumerate; default is unindented
+\fancyifelse{
+	\setlist[enumerate, 1]{
+		font          = \color{fancycolor}\bfseries,
+		leftmargin    = 0pt,
+		labelsep      = \fancysep,
+		listparindent = \parindent,
+		parsep        = 0pt,
+		label         = {\arabic*\fancyifelse{}{.}},
+		ref           = {\arabic*}
+	}
+}{
+	\setlist[enumerate, 1]{
+		wide          = 0pt,
+		leftmargin    = *,
+		listparindent = \parindent,
+		parsep        = 0pt,
+		label         = {\arabic*\fancyifelse{}{.}},
+		ref           = {\arabic*}
+	}
+}
+
+\setlist[enumerate, 2]{
+	font          = \mdseries,
+	wide          = 0pt,
+	leftmargin    = *,
+	listparindent = \parindent,
+	parsep        = 0pt,
+	label         = {\alph*.},
+	ref           = {\alph*}
+}
+
+
+
+% itemize; default is unindented
+\setlist[itemize]{
+	wide          = 0pt,
+	leftmargin    = *,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+\setlist[itemize, 1]{ label = {\textbullet} }
+\setlist[itemize, 2]{ label = {\textopenbullet} }
+
+
+
+% description; default is unindented
+\setlist[description, 1]{
+	wide          = 0pt,
+	listparindent = \parindent,
+	parsep        = 0pt,
+	format        = {\addperiod}
+}
+\setlist[description, 2]{
+	leftmargin    = \parindent,
+	labelindent   = \parindent,
+	listparindent = \parindent,
+	parsep        = 0pt,
+	format        = {\normalfont\itshape\/\addperiod}
+}
+
+
+
+% enumerate*; an indented version of enumerate
+\newlist{enumerate*}{enumerate}{2}
+\setlist[enumerate*]{
+	wide          = 0pt,
+	leftmargin    = *,
+	labelindent   = \parindent,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+\setlist[enumerate*, 1]{
+	label = {\arabic*.},
+ 	ref   = {\arabic*}
+}
+\setlist[enumerate*, 2]{
+	label = {\alph*.},
+ 	ref   = {\alph*}
+}
+
+
+
+% itemize*; an indented version of itemize
+\newlist{itemize*}{itemize}{2}
+\setlist[itemize*]{
+	wide          = 0pt,
+	leftmargin    = *,
+	labelindent   = \parindent,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+\setlist[itemize*, 1]{  label = {\textbullet} }
+\setlist[itemize*, 2]{  label = {\textopenbullet} }
+
+
+
+% description*; an indented version of description
+\newlist{description*}{description}{2}
+\setlist[description*]{
+	leftmargin    = \parindent,
+	labelindent   = \parindent,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+
+
+
+% equivalenceslist for stating equivalences;
+% unindented by default
+\newlist{equivalenceslist}{enumerate}{2}
+\setlist[equivalenceslist]{
+	wide          = 0pt,
+	leftmargin    = *,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+\setlist[equivalenceslist,1]{
+	label = {\roman*.},
+	ref   = {\roman*}
+}
+\setlist[equivalenceslist,2]{
+	label = {\alph*.},
+	ref   = {\theequivalenceslisti.\alph*}
+}
+
+% equivalenceslist*; an indented version of equivalenceslist
+\newlist{equivalenceslist*}{enumerate}{2}
+\setlist[equivalenceslist*]{
+	wide          = 0pt,
+	leftmargin    = *,
+	labelindent   = \parindent,
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+\setlist[equivalenceslist*,1]{
+	label = {\roman*.},
+	ref   = {\roman*}
+}
+\setlist[equivalenceslist*,2]{
+	label = {\roman*.},
+	ref   = {\roman*}
+}
+
+% implicationslist; for lists of implications in proofs
+% never indented
+\newlist{implicationslist}{description}{2}
+\setlist[implicationslist]{
+	wide          = 0pt,
+	before        = {\renewcommand{\makelabel}{\dotlabel}},
+	listparindent = \parindent,
+	parsep        = 0pt
+}
+
+% shortcuts for the items in implicationslist
+\newcommand{\addperiod}[1]{#1.}
+\newcommand{\dotlabel}[1]{\normalfont #1.}
+\newcommand{\textimp}[2]{\ref{#1}~$\implies$~\ref{#2}}
+\newcommand{\textiff}[2]{\ref{#1}~$\iff$~\ref{#2}}
+\newcommand{\impitem}[2]{\item[\textimp{#1}{#2}]}
+\newcommand{\iffitem}[2]{\item[\textiff{#1}{#2}]}
+
+% casedistinction; list for case distinctions
+% never indented
+\newlist{casedistinction}{enumerate}{2}
+\setlist[casedistinction, 1]{
+	wide          = 0pt,
+	leftmargin    = *,
+	listparindent = \parindent,
+	parsep        = 0pt,
+	label         = {\bfseries Case~\arabic*.},
+	ref           = {\arabic*}
+}
+\setlist[casedistinction, 2]{
+	wide          = 0pt,
+	ref           = {\arabic*},
+	label         = {\bfseries Case~\arabic{casedistinctioni}.\alph*.},
+	ref           = {\arabic*}
+}
+
+\crefname{casedistinctioni}{Case}{Cases}
+\Crefname{casedistinctioni}{Case}{Cases}
+
+
+
+%%%%% THEOREM-LIKE ENVIRONMENTS CONFIGURATION %%%%%
+
+\newcounter{everything}[section]
+
+\newtheoremstyle{fancy}
+  {\topsep}   % abovespace
+  {\topsep}   % belowspace
+  {\upshape}  % bodyfont
+  {0pt}       % indent (empty value is the same as 0pt)
+	{\color{fancycolor}\bfseries} % headfont
+  {}          % headpunct
+  {0pt} % headspace
+	{%
+		\thmnumber{\makebox[0pt][r]{\textcolor{fancycolor}{#2}\hspace{\fancysep}}}%
+		\thmname{#1}%
+		\thmnote{\color{black}\mdseries\ (#3)}%
+		\thmname{.\hspace{5pt plus 1pt minus 1pt}}%
+	} % CUSTOM-HEAD-SPEC
+
+\theoremstyle{\mytheoremstyle}
+
+\newtheorem{construction}[everything]{\protect\constructionname}
+\newtheorem{convention}  [everything]{\protect\conventionname}
+\newtheorem{corollary}   [everything]{\protect\corollaryname}
+\newtheorem{definition}  [everything]{\protect\definitionname}
+\newtheorem{example}     [everything]{\protect\examplename}
+\newtheorem{fluff}       [everything]{}
+\newtheorem{lemma}       [everything]{\protect\lemmaname}
+\newtheorem{notation}    [everything]{\protect\notationname}
+\newtheorem{proposition} [everything]{\protect\propositionname}
+\newtheorem{question}    [everything]{\protect\questionname}
+\newtheorem{recall}      [everything]{\protect\recallname}
+\newtheorem{remark}      [everything]{\protect\remarkname}
+\newtheorem{theorem}     [everything]{\protect\theoremname}
+\newtheorem{warning}     [everything]{\protect\warningname}
+
+% default names
+\newcommand{\claimname}{Claim}
+\newcommand{\constructionname}{Construction}
+\newcommand{\conventionname}{Convention}
+\newcommand{\corollaryname}{Corollary}
+\newcommand{\definitionname}{Definition}
+\newcommand{\examplename}{Example}
+\newcommand{\lemmaname}{Lemma}
+\newcommand{\notationname}{Notation}
+\newcommand{\propositionname}{Proposition}
+\newcommand{\questionname}{Question}
+\newcommand{\recallname}{Recall}
+\newcommand{\remarkname}{Remark}
+\newcommand{\theoremname}{Theorem}
+\newcommand{\warningname}{Warning}
+
+\gappto\polyglossia@language@switched {
+	\gappto\captionsgerman{
+		\renewcommand{\claimname}{Behauptung}
+		\renewcommand{\constructionname}{Konstruktion}
+		\renewcommand{\conventionname}{Konvention}
+		\renewcommand{\corollaryname}{Korollar}
+		\renewcommand{\definitionname}{Definition}
+		\renewcommand{\examplename}{Beispiel}
+		\renewcommand{\lemmaname}{Lemma}
+		\renewcommand{\notationname}{Notation}
+		\renewcommand{\propositionname}{Proposition}
+		\renewcommand{\questionname}{Frage}
+		\renewcommand{\recallname}{Wiederholung}
+		\renewcommand{\remarkname}{Bemerkung}
+		\renewcommand{\theoremname}{Satz}
+		\renewcommand{\warningname}{Warnung}
+		\crefname{construction}{Konstruktion}{Konstruktionen}
+		\crefname{convention}{Konvention}{Konventionen}
+		\crefname{corollary}{Korollar}{Korollare}
+		\crefname{definition}{Definition}{Definitionen}
+		\crefname{example}{Beispiel}{Beispiele}
+		\crefname{lemma}{Lemma}{Lemmata}
+		\crefname{notation}{Notation}{Notationen}
+		\crefname{proposition}{Proposition}{Propositionen}
+		\crefname{question}{Frage}{Fragen}
+		\crefname{recall}{Wiederholung}{Wiederholungen}
+		\crefname{remark}{Bemerkung}{Bemerkungen}
+		\crefname{theorem}{Satz}{Sätze}
+		\crefname{warning}{Warnung}{Warnungen}
+	}
+}
+
+
+% the numbering for claims is local to the surrounding theorem-like environments;
+% to be used in proofs
+\newtheorem{claim}{\protect\claimname} % unnumbered version
+% unnumbered version of claim
+\newtheorem*{claim*}{\protect\claimname} % unnumbered version
+
+% printing of counters
+\renewcommand{\theeverything}{\thesection.\arabic{everything}}
+\renewcommand{\theclaim}{\arabic{claim}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   TEXT FORMATTING   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\defemph}{\textbf}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   MATH CONFIGURATION   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%% ARROWS %%%%%
+
+\renewcommand{\to}{
+	\mathchoice
+	{\longrightarrow}
+	{\rightarrow}
+	{\rightarrow}
+	{\rightarrow}
+}
+\newcommand{\from}{
+	\mathchoice
+	{\longleftarrow}
+	{\leftarrow}
+	{\leftarrow}
+	{\leftarrow}
+}
+\AtBeginDocument{
+	\let\oldmapsto\mapsto
+	\renewcommand{\mapsto}{
+		\mathchoice
+		{\longmapsto}
+		{\oldmapsto}
+		{\oldmapsto}
+		{\oldmapsto}
+	}
+}
+\AtBeginDocument{
+	\let\oldmapsfrom\mapsfrom
+	\renewcommand{\mapsfrom}{
+		\mathchoice
+		{\longmapsfrom}
+		{\oldmapsfrom}
+		{\oldmapsfrom}
+		{\oldmapsfrom}
+	}
+}
+\newcommand{\onetoone}{
+	\mathchoice
+	{\longleftrightarrow}
+	{\leftrightarrow}
+	{\leftrightarrow}
+	{\leftrightarrow}
+}
+\newcommand{\xto}[1]{
+	\mathchoice
+	{\xrightarrow{\enspace #1 \enspace}}
+	{\xrightarrow{#1}}
+	{\xrightarrow{#1}}
+	{\xrightarrow{#1}}
+}
+\newcommand{\xfrom}[1]{
+	\mathchoice
+	{\xleftarrow{\enspace #1 \enspace}}
+	{\xleftarrow{#1}}
+	{\xleftarrow{#1}}
+	{\xleftarrow{#1}}
+}
+
+
+
+%%%%% NUMBERS AND FIELDS %%%%%
+
+\newcommand{\boldfont}{\mathbb}
+\newcommand{\Natural}{\boldfont{N}}
+\newcommand{\Integer}{\boldfont{Z}}
+\newcommand{\Rational}{\boldfont{Q}}
+\newcommand{\Real}{\boldfont{R}}
+\newcommand{\Complex}{\boldfont{C}}
+\newcommand{\Finite}{\boldfont{F}}
+\newcommand{\kf}{\boldfont{k}}
+\newcommand{\Kf}{\boldfont{K}}
+\newcommand{\Lf}{\boldfont{L}}
+
+
+
+%%%%% OPERATORS %%%%%
+
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Center}{Z}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Exterior}{\bigwedge}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Symm}{S}
+\DeclareMathOperator{\Tensor}{T}
+\DeclareMathOperator{\Tor}{Tor}
+
+
+
+%%%%% FUNCTIONS %%%%%
+
+\DeclareMathOperator{\ringchar}{char}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\sign}{sgn}
+\newcommand{\tr}{tr}
+
+
+
+%%%%% SPECIAL ELEMENTS %%%%%
+
+\newcommand{\Id}{\mathbb{1}}
+\newcommand{\ph}{\mathrm{-}}
+\newcommand{\phdot}{\,\cdot\,}
+
+
+
+%%%%% BINARY OPERATIONS %%%%%
+
+\newcommand{\act}{\mathbin{.}}
+\newcommand{\tensor}{\otimes}
+
+
+
+%%%%% RELATIONS %%%%%
+
+\newcommand{\defined}{\coloneqq}
+\newcommand{\defines}{\eqqcolon}
+\newcommand{\leftadjoint}{\dashv}
+\newcommand{\rightadjoint}{\vdash}
+\renewcommand{\setminus}{\smallsetminus}
+
+
+
+%%%%% DELIMITERS %%%%%
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\class}{\lbrack}{\rbrack}
+\DeclarePairedDelimiter{\generate}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ideal}{\lparen}{\rparen}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+
+
+%%%%% DECORATIONS %%%%%
+
+\newcommand{\ab}{\mathrm{ab}}
+\newcommand{\conj}{\overline}
+\newcommand{\induced}{\overline}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\trans}{\mathsf{t}}
+
+
+
+%%%%% QED SYMBOL %%%%%
+
+\fancyifelse{
+	\renewcommand{\qedsymbol}{♠}
+}{
+}
+
+
+
+%%%%% MISC %%%%%
+
+% iddots
+\newcommand{\iddots}{⋰}
+
+% larger bullet
+\let\oldbullet\bullet
+\renewcommand{\bullet}{{\scalebox{1.15}{\oldbullet}}}
+
+% restrict{f}{X} for f|_X
+% restrict[Y]{f}{X} for f
+% stared version scales the delimiter
+% restrict[\(bB)ig(g)] for manual scaling of the delimiter
+% * has precedent over manual scaling if both are given
+\DeclarePairedDelimiter{\prerestrict}{.}{\rvert} % period = empty delimiter
+\NewDocumentCommand%
+{\restrict}%
+{s o m m O{}}%
+{%
+	\IfBooleanTF{#1}
+	{%
+		\prerestrict*{#3}_{#4}^{#5}
+	}
+	{%
+		\IfValueTF{#2}
+		{%
+			\prerestrict[#2]{#3}_{#4}^{#5}
+		}
+		{%
+			#3\rvert_{#4}^{#5}
+		}
+	}
+}
+
+% \suchthat for inline
+% \suchthat* for for display math with \left and \right
+% \suchthat[\(bB)ig(g)] for manual scaling in display math
+\NewDocumentCommand%
+{\suchthat}%
+{so}
+{%
+	\IfValueTF{#2}
+	{%
+		\:#2|\:
+	}
+	{%
+		\IfBooleanTF{#1}
+		{%
+			\:\middle|\:
+		}
+		{%
+			\mathrel{|}
+		}
+	}
+}
+
