@@ -7,6 +7,9 @@ jobs:
       # Edit here with the names of your latex file and directory (can use ".")
       DIR: "."
       FILE: master
+    env:
+      DIR: "chapters
+      FILE: chapter1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
