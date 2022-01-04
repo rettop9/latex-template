@@ -1,5 +1,7 @@
 name: compile_deploy_latex
-on: [push]
+on:
+  schedule:
+    - cron: '0 14 * * 1'
 jobs:
   paper:
     runs-on: ubuntu-latest
