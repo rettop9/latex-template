@@ -6,4 +6,4 @@ In der master.tex Datei sollten lediglich alle weiteren *.tex Dateien* inkludier
 Alle weiteren *.tex Dateien* sollten im Ordner chapters aufbewahrt werden. 
 In dem Ordner für die Workflows findet sich eine *.yml* Datei, diese lässt derzeit einmal die Woche das Dokument compilen mit der Veränderung bei on: [push] wird jedes mal, wenn ihr Sachen in den master pusht ein neues PDF-Dokument gebaut.
 
-[PDP-Dokument](https://github.com/git-fabus/latex-template/build/master.pdf)
+[PDP-Dokument](https://github.com/git-fabus/latex-template/blob/build/master.pdf)
