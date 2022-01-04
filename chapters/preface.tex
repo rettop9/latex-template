@@ -1,42 +1,110 @@
 %\lecture{0}{}{Formelsammlung}
 \section{Formelsammlung}
+\subsection*{Einleitung}
+Die Formelsammlung konkret hier für das Latex-Dokument soll die typischen Vorgaben zeigen, die das Dokument erfüllt, alles was in diesem \textit{Dokument} steht kann / sollte ohne Probleme verwendet werden können. 
+
+\subsection{Theoreme}
+Dies sind die typischen mathematischen Theoreme, welche oft in einer Vorlesung vorkommen, dazu zählt folgendes:
 \begin{lem}[Name des Lemmas]
-	Irgendwelche natürlichen Zahlen $\N$ sind grösser als 4
+	Ein Lemma ist ein Hilfssatz, dies ist meist eine Schwächere Aussage um Sätze zu beweisen, allerdings wird hier auch ein Beweis benötigt! 
 \end{lem}
-
-So sehen Zeilen aus, die einfach dazwischen geschrieben werden ohne irgendwelchen Begins oder Ends 
-
+ 
 \begin{thm} \label{tg}%
-	Die Menge $M$ ist bijektiv zu $\N$ $\iff$ $M$ ist abzählbar unendlich
+	Ein Satz ist eine starke Aussage in der Mathematik, diese wird meist mit Hilfsätzen bewiesen.
 \end{thm}
 
 \begin{cor}
-	$M$ überabzählbar $\implies$ $M$ größer als $\Q$.
+Ein Korollar ist etwas, dass direkt aus den jeweiligen Satz oder Lemma folgt. Meist muss dies nicht bewiesen werden
 \end{cor}
 
 \begin{note}
 
-	Bemerkungen des Profs
+	Bemerkungen des Professor oder für einen selbst können hier stehen
 
 \end{note}
 
 \begin{proof}[zu \ref{tg}]
 
-Jeder Beweis der Mathematik ist trivial
+Jeder Beweis sollte direkt unter dem zu beweisenden stehen oder den passenden Tag erhalten.
 
 \end{proof}
 
-\begin{example}
+\begin{example}[Beispiel]
 
-	Tolles Mengen dafür sind unendliche Mengen
+	Die Beispiele in diesem Abschnitt sollen Sätze oder Definitionen besser erklären
 
 \end{example}
-\begin{df}
+\begin{df}[Definition]
 
 Das ist eine Definition
 
 \end{df}
 
+\subsection{Mathematische Formeln}
+Dieser Abschnitt befasst sich mit effizienten Darstellungen von mathematischen Symbolen.
+Dazu zählen vor allem Formel, die ich derzeit häufig in der Vorlesung benötige.
+\begin{example}	
+Zahlenarten $\N$,$\R$,$\C$,$\Q$ oder 
+die leere Menge \O. 
+Auch Zeichen wie: $\implies, \impliedby, \iff, \neg$ sind wichtig
+\end{example}
+\begin{df}[Quantoren]
+	Allquantor : $\forall$ \\
+	Existenzquantor : $\exists$
+\end{df}
+\begin{example}
+	$\forall _x \exists _y :  x \in Y $
+\end{example}
+
+\begin{df}[Mengensymbole]
+
+$M$ echte Teilmenge von $N$ : $M \subset N$ \\
+$M$ Teilmenge von $N$ : $M \subseteq N$ \\
+ $x$ nicht Element von $Y$ : $x \notin Y$
+
+\end{df}
+
+Weiter gibt es natürlich auch die Möglichkeit die gegenteile zu Bewirken.
+
+\begin{example}
+
+$A$ ist Obermenge von $B$ : $A \supset B$
+
+\end{example}
+
+Dabei ist es wichtige, dass auf die jeweilige Schreibweise geachtet werden muss.
+
+\begin{note}
+	Vielleicht sollten hier noch andere Kommandos für festgelegt werden
+\end{note}
+
+\begin{df}[Summenschreibweise]
+Für ganze Zahlen $m,n \and a_k \in \R$ gilt: \\
+
+$\sum\limits_{k=m}^{n}a_k = a_m + a_{m+1}+ ... + a_n$
+
+\end{df}
+Anhand dieser Definition soll nun kurz ein Satz und ein der passende Beweis dazu geliefert werden.
+\begin{thm}\label{theorem}%
+
+	
+	$\forall _{n \in \N} : \sum\limits_{k=1}^{n}(2k-1) = n^2$
+
+\end{thm}
+\begin{proof}[\ref{theorem}]%
+	A(n) sei die Aussage im obigen Satz \\
+	\underline{IA $n=1$}: \\
+	$1=1^2$ \\
+	\underline{IS $n \rightarrow n+1$}: \\
+	Da die die Annahme für alle n gilt, gilt demnach auch: 
+	$\sum\limit_{k=1}^{n+1}(2k-1) = (n+1)^2$ \\
+	Nach Induktionsannahme gilt: \\
+	$\sum\limit_{k=1}^{n+1}= n^2+(2*(n+1)-1) = n^2+2n+1$
+	
+
+
+
+\end{proof}
 
 
 
