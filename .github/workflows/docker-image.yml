@@ -3,21 +3,17 @@ on: [push]
 jobs:
   paper:
     runs-on: ubuntu-latest
+    container: 
+      image: texlive/texlive
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Docker-Image
-        uses: docker://texlive/texlive
-      - name: LaTeX compile
-        working-directory: ${{ env.DIR }}
-        run: latexmk -pdflatex=xelatex -pdf master.tex
-      - name: move
-        run: mkdir -p github_artifacts && mv ${{ env.DIR }}/${{ env.FILE }}.pdf ./github_artifacts/
-      - name: Upload pdf as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.FILE }}.pdf
-          path: ./github_artifacts
+    - name: Compile Latex
+      run: latexmk -pdflatex=xelatex -pdf master.tex
+    - name: move
+      run: mkdir -p github_artifacts && mv ${{ env.DIR }}/${{ env.FILE }}.pdf ./github_artifacts/
+    - name: Upload pdf as artifact
+      uses: actions/upload-artifact@v2
+      
+      
   deploy:
     # Edit here if compiling multiple papers
     needs: [paper]
