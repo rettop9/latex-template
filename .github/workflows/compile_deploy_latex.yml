@@ -1,5 +1,5 @@
 name: compile_deploy_latex
-on:
+on: workflow_dispatch
   schedule:
     - cron: '0 14 * * 1'
 jobs:
