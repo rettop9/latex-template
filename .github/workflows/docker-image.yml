@@ -4,7 +4,7 @@ jobs:
   paper:
     env: #Edit here with the names of your latex file and directory (can use ".")
       DIR: "."
-      FILE: master
+      FILE: master.tex
     runs-on: ubuntu-latest
     container: 
       image: texlive/texlive
