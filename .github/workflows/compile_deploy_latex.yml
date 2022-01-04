@@ -1,7 +1,6 @@
 name: compile_deploy_latex
 on: workflow_dispatch
-  schedule:
-    - cron: '0 14 * * 1'
+
 jobs:
   paper:
     runs-on: ubuntu-latest
