@@ -2,6 +2,9 @@ name: docker_latex
 on: [push]
 jobs:
   paper:
+    env: #Edit here with the names of your latex file and directory (can use ".")
+      DIR: "."
+      FILE: master
     runs-on: ubuntu-latest
     container: 
       image: texlive/texlive
